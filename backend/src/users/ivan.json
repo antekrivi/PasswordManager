@@ -1,0 +1,13 @@
+{
+  "passwordHash": "$argon2id$v=19$m=65536,t=3,p=4$kbnQc98Q8R1EPzuxvfCe9Q$90XbjvDvH+8erMZ+1Terj6UVnQWoo4Pf6CQv+wQ2fSw",
+  "encryptionSalt": "6/f9VtN/vdQg2rUi140iWA==",
+  "vault": [
+    {
+      "salt": "2ksFFxJ5YQ3aIAHYL4yGvw==",
+      "iv": "TE3XgS1Y6Iq9WccZ",
+      "ciphertext": "dZ74th+uGNrN40XWQlEfnn7JAQlVZefhVZFJLHYuLvIZ1Z74i+P0VGxfhvQDsgHMh6VsOHs6Sd+6LHirE225hcPtHHR1VuM=",
+      "tag": "WKL+zm3Q8RyRmJxhkdN/ZA=="
+    }
+  ],
+  "vaultHmac": "996d9e04527d40b5c256450342bda14964406baed9cde66b45a43acbffa66478"
+}
