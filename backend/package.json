@@ -1,10 +1,13 @@
 {
   "dependencies": {
     "argon2": "^0.43.0",
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
-    "dotenv": "^17.0.0",
+    "dotenv": "^17.0.1",
     "express": "^5.1.0",
+    "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.17.0",
     "mongoose": "^8.16.1"
   },
   "name": "backend",
@@ -12,6 +15,10 @@
   "description": "",
   "main": "index.js",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.0.10",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
@@ -19,8 +26,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "ts-node src/vault-sim.ts",
-    "dev": "ts-node vault-sim.ts"
+    "start": "ts-node src/server.ts",
+    "dev": "ts-node src/server.ts"
   },
   "keywords": [],
   "author": "",

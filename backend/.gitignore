@@ -1,2 +1,32 @@
 /node_modules
 /users
+
+# 🔧 Node.js / npm
+node_modules/
+
+# ⚙️ Environment
+.env
+.env.local
+.env.*.local
+
+# 📦 Build output
+dist/
+build/
+out/
+coverage/
+*.tsbuildinfo
+
+# ⚙️ IDE / OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.DS_Store
+Thumbs.db
+
+# ⚒️ TypeScript
+tsconfig.tsbuildinfo
+tsconfig.build.tsbuildinfo
+
+# 🔐 MongoDB dump
+dump/

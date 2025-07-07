@@ -1,0 +1,32 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+  <div>
+    <label>Email</label>
+    <input type="email" formControlName="email" />
+    <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+      Neispravna email adresa.
+    </div>
+  </div>
+
+  <div>
+    <label>Master lozinka</label>
+    <input type="password" formControlName="masterPassword" />
+    <div *ngIf="registerForm.get('masterPassword')?.invalid && registerForm.get('masterPassword')?.touched">
+      Lozinka mora imati barem 8 znakova.
+    </div>
+  </div>
+
+  <div>
+    <label>Ponovi master lozinku</label>
+    <input type="password" formControlName="repeatMasterPassword" />
+    <div *ngIf="registerForm.errors?.['passwordsNotMatching'] && registerForm.get('repeatMasterPassword')?.touched">
+      Lozinke se ne podudaraju.
+    </div>
+  </div>
+
+  <div>
+    <label>Hint za lozinku (neobavezan)</label>
+    <input type="text" formControlName="masterHint" />
+  </div>
+
+  <button type="submit">Registriraj se</button>
+</form>

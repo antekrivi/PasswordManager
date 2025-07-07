@@ -4,7 +4,7 @@ import argon2 from 'argon2';
 import readline from 'readline';
 import { VaultEntry } from './models/VaultEntry';
 import { EncryptedVaultEntry } from './models/EncryptedVaultEntry';
-import { UserData } from './models/UserData';
+import { UserData } from './models/User';
 
 const USERS_DIR = './src/users';
 
