@@ -7,13 +7,16 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
-import { HttpClientModule,  } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule,} from '@angular/common/http';
+import { VaultComponent } from './components/vault/vault.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
+    VaultComponent,
   ],
   imports: [
     BrowserModule,
@@ -24,7 +27,9 @@ import { HttpClientModule,  } from '@angular/common/http';
     HttpClientModule
     
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+  ],
   bootstrap: [AppComponent],
   exports: [
     ReactiveFormsModule

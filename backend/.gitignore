@@ -1,5 +1,7 @@
 /node_modules
 /users
+localhost+2-key.pem
+localhost+2.pem
 
 # 🔧 Node.js / npm
 node_modules/
@@ -30,3 +32,12 @@ tsconfig.build.tsbuildinfo
 
 # 🔐 MongoDB dump
 dump/
+
+# Certifikati (npr. mkcert)
+*.pem
+*.crt
+*.key
+cert/
+ssl/
+certs/
+mkcert-*

@@ -3,7 +3,6 @@ import argon2 from 'argon2';
 import UserModel from '../models/User';
 import { calculateVaultHmac, deriveHmacKey } from '../utils/crypto.util';
 import { EncryptedVaultEntry } from '../models/EncryptedVaultEntry';
-import { VaultEntry } from '../models/VaultEntry';
 import jwt from 'jsonwebtoken';
 
 export class AuthService {
@@ -18,6 +17,7 @@ export class AuthService {
 
         const passwordHash = await argon2.hash(email + masterPassword);
         const encryptionSalt = crypto.randomBytes(16).toString('base64');
+
         const vault: EncryptedVaultEntry[] = [];
 
         const hmacKey = await deriveHmacKey(masterPassword, encryptionSalt);
@@ -32,6 +32,7 @@ export class AuthService {
             vaultHmac,
         });
 
+        console.log("User created:", user);
         await user.save();
         return user;
     }
@@ -47,12 +48,33 @@ export class AuthService {
             throw new Error('Invalid credentials');
         }
 
-        const token = jwt.sign(
-            { id: user._id, email: user.email },
-            process.env.JWT_SECRET || 'tajna',
-            { expiresIn: '30d' }
+        //const token = await this.generateTokens(user._id.toString(), user.email);
+
+        return {
+            //token,
+            
+            id: user._id,
+            email: user.email,
+            passwordHint: user.passwordHint,
+            encryptionSalt: user.encryptionSalt,
+            vault: user.vault,
+            vaultHmac: user.vaultHmac,
+            
+        };
+    }
+
+    async generateTokens(userId: string, email: string) {
+        const accessToken = jwt.sign(
+            { id: userId, email },
+            process.env.JWT_ACCESS_SECRET!,
+            { expiresIn: '15m' }
         );
 
-        return { token, email: user.email };
+        const refreshToken = jwt.sign(
+            { id: userId },
+            process.env.JWT_REFRESH_SECRET!,
+            { expiresIn: '7d' }
+        );
+        return { accessToken, refreshToken };
     }
 }

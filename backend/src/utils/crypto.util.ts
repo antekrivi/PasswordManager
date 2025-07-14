@@ -54,9 +54,14 @@ export const decryptVaultEntry = async(masterPasswrod: string, entry: EncryptedV
 
 export const calculateVaultHmac = (vault: EncryptedVaultEntry[], hmacKey: Buffer): string => {
     const hmac = crypto.createHmac('sha256', hmacKey);
-    hmac.update(JSON.stringify(vault));
+    const sanitizedVault = vault.map(entry => ({
+        salt: entry.salt,
+        iv: entry.iv,
+        ciphertext: entry.ciphertext,
+        tag: entry.tag
+    }));
+    hmac.update(JSON.stringify(sanitizedVault));
     return hmac.digest('hex');
-
 }
 
 export const deriveHmacKey = async(masterPassword: string, encryptionSalt: string): Promise<Buffer> => {

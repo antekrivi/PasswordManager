@@ -1,1 +1,19 @@
-<p>login works!</p>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+  <div>
+    <label>Email</label>
+    <input type="email" formControlName="email" />
+    <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+      Neispravna email adresa.
+    </div>
+  </div>
+
+  <div>
+    <label>Master lozinka</label>
+    <input type="password" formControlName="masterPassword" />
+    <div *ngIf="loginForm.get('masterPassword')?.invalid && loginForm.get('masterPassword')?.touched">
+      Lozinka mora imati barem 8 znakova.
+    </div>
+  </div>
+
+  <button type="submit">Login</button>
+</form>
