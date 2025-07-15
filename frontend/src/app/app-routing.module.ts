@@ -5,12 +5,13 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { VaultComponent } from './components/vault/vault.component';
+import { authGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {component: HomeComponent, path: '', pathMatch: 'full'},
   {component: LoginComponent, path: 'login'},
   {component: RegisterComponent, path: 'register'},
-  {component: VaultComponent, path: 'vault'},
+  {component: VaultComponent, path: 'vault', canActivate: [authGuard]},
 ];
 
 @NgModule({

@@ -16,13 +16,13 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(modifiedReq).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-          // Probaj refresh
+          
           return this.authService.refresh().pipe(
             switchMap(() => {
-              return next.handle(modifiedReq); // retry original
+              return next.handle(modifiedReq); 
             }),
             catchError(() => {
-              // Logout ako i refresh padne
+              
               this.authService.logout();
               return throwError(() => error);
             })

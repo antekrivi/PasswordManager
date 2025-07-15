@@ -48,18 +48,13 @@ export class AuthService {
             throw new Error('Invalid credentials');
         }
 
-        //const token = await this.generateTokens(user._id.toString(), user.email);
-
-        return {
-            //token,
-            
+        return {         
             id: user._id,
             email: user.email,
             passwordHint: user.passwordHint,
             encryptionSalt: user.encryptionSalt,
             vault: user.vault,
             vaultHmac: user.vaultHmac,
-            
         };
     }
 
