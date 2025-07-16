@@ -15,6 +15,7 @@ const vaultController = new VaultController(vaultService);
 // POST /auth/...
 router.post('/register', authController.registerUser);
 router.post('/login', authController.loginUser);
+router.post('/logout', authController.logoutUser);
 
 //GET /auth/vault
 router.post('/vault', vaultController.unlockVault);

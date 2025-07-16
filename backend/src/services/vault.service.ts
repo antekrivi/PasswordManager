@@ -9,7 +9,6 @@ export class VaultService {
 
     async unlockVault(email: string, masterPassword: string): Promise<VaultEntry[]> {
         
-    
         const user = await UserModel.findOne({ email });
         if (!user) {
             throw new Error("User not found while unlocking vault");
@@ -24,7 +23,6 @@ export class VaultService {
         if (vaultHmac !== user.vaultHmac) {
             throw new Error("Invalid master password or vault integrity compromised");
         }
-
         const decryptedEntries: VaultEntry[] = [];
 
         for (const encryptedEntry of user.vault) {
@@ -35,7 +33,9 @@ export class VaultService {
                 throw new Error(`Failed to decrypt vault entry: ${error}`);
             }
         }
-
         return decryptedEntries;
     }
+
+    
+
 }

@@ -4,19 +4,21 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthService } from '../../services/auth.service';
 import { RegisterData } from '../../models/RegisterData';
 import { NavigationComponent } from '../partials/navigation/navigation.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   standalone: false,
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  //imports: [CommonModule, ReactiveFormsModule]
 })
 export class RegisterComponent {
   
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router) {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       masterPassword: ['', [Validators.required, Validators.minLength(12)]],
@@ -43,6 +45,7 @@ export class RegisterComponent {
       ).subscribe({
         next: (response) => {
           console.log('Registracija uspješna:', response);
+          this.router.navigate(['/login']);
         },
         error: (error) => {
           console.error('Greška prilikom registracije:', error);

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'nav',
@@ -9,7 +12,11 @@ import { Router } from '@angular/router';
 })
 export class NavigationComponent implements OnInit{
 
-  constructor(private router: Router) { }
+  public title: string = '';
+
+  constructor(private router: Router, 
+    private titleService: Title,
+    private authService: AuthService) { }
 
   ngOnInit(): void {
     const savedTheme = localStorage.getItem('theme');
@@ -18,11 +25,13 @@ export class NavigationComponent implements OnInit{
     }
   }
 
-   toggleDarkMode(): void {
+  
+  toggleDarkMode(): void {
     const isDark = document.body.classList.toggle('dark-theme');
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
   }
   logout(){
+    this.authService.logout();
     this.router.navigateByUrl('/');
   }
 }

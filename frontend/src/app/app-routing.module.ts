@@ -8,10 +8,10 @@ import { VaultComponent } from './components/vault/vault.component';
 import { authGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  {component: HomeComponent, path: '', pathMatch: 'full'},
-  {component: LoginComponent, path: 'login'},
-  {component: RegisterComponent, path: 'register'},
-  {component: VaultComponent, path: 'vault', canActivate: [authGuard]},
+  {component: HomeComponent, path: '', pathMatch: 'full', data: { title: 'Home' }},
+  {component: LoginComponent, path: 'login', data: { title: 'Login' }},
+  {component: RegisterComponent, path: 'register', canActivate: [authGuard], data: { title: 'Register' }},
+  {component: VaultComponent, path: 'vault', canActivate: [authGuard], data: { title: 'Vault' }},
 ];
 
 @NgModule({

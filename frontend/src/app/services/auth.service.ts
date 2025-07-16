@@ -36,8 +36,7 @@ export class AuthService {
   logout(): void {
     this.http.post(`${this.API}/logout`, {}, { withCredentials: true }).subscribe({
       next: () => {
-        localStorage.removeItem('user');
-        //this.userService.clearUser(); // ako koristiš userService
+        
         console.log("Odjavljen korisnik.");
       },
       error: (err) => {

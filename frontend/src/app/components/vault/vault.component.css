@@ -1,14 +1,20 @@
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .vault-container {
   max-width: 600px;
   margin: 100px auto 0;
+  margin-bottom: 20px;
   padding: 2rem clamp(1rem, 5vw, 2rem);
   background-color: var(--form-color);
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
   color: var(--text-color);
+  overflow: visible;
 }
 
-  
 .vault-container h2 {
   text-align: center;
   margin-bottom: 2rem;
@@ -64,14 +70,6 @@
   margin-bottom: 1rem;
 }
 
-.vault-entry {
-  background-color: rgba(100, 255, 218, 0.08);
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  border: 1px solid var(--primary-color);
-}
-
 .vault-entry h4 {
   margin: 0 0 0.5rem;
   color: var(--primary-color);
@@ -79,4 +77,84 @@
 
 .vault-entry p {
   margin: 0.25rem 0;
+}
+
+
+.password-field {
+  display: flex;
+  align-items: center;
+  margin: 0.25rem 0;
+}
+
+.password-container {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background-color: rgba(100, 255, 218, 0.1);
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  margin-left: 0.5rem;
+  user-select: none;
+}
+
+.password-container:hover {
+  background-color: rgba(100, 255, 218, 0.2);
+  border-color: var(--primary-color);
+}
+
+.password-hidden {
+  font-family: monospace;
+  letter-spacing: 2px;
+  color: var(--text-color);
+}
+
+.password-visible {
+  font-family: monospace;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.password-icon {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.password-container:hover .password-icon {
+  opacity: 1;
+}
+
+.password-container::after {
+  content: "Hover za prikaz / Click za zadržavanje";
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 1000;
+  max-width: 90vw;
+  word-wrap: break-word;
+}
+
+.password-container:hover::after {
+  opacity: 1;
+}
+
+.vault-entry {
+  background-color: rgba(100, 255, 218, 0.08);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border: 1px solid var(--primary-color);
+  position: relative; /* Za tooltip positioning */
 }

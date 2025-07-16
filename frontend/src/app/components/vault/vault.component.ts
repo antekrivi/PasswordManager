@@ -20,6 +20,7 @@ export class VaultComponent implements OnInit{
   decryptedEntries: VaultEntry[] = [];
   vaultUnlocked: boolean = false;
   errorMessage: string = '';
+  visiblePasswords: { [key: number]: boolean } = {};
 
   constructor(private vaultService: VaultService,
     private router: Router,
@@ -38,9 +39,7 @@ export class VaultComponent implements OnInit{
         this.router.navigate(['/login']);
       }
     });
-
   }
-
 
   async unlockVault() {   
     try {
@@ -65,9 +64,14 @@ export class VaultComponent implements OnInit{
       this.errorMessage = 'Neuspješno otključavanje vaulta. Provjerite lozinku.';
       this.vaultUnlocked = false;
     }
-
-
   }
 
+  togglePasswordVisibility(index: number): void { this.visiblePasswords[index] = !this.visiblePasswords[index];}
+
+  showPassword(index: number): void {this.visiblePasswords[index] = true;}
+
+  hidePassword(index: number): void {this.visiblePasswords[index] = false;}
+
+  isPasswordVisible(index: number): boolean {return this.visiblePasswords[index] || false;}
 
 }

@@ -1,6 +1,6 @@
 <nav></nav>
 <div class="vault-container">
-  <h2>🔐 Vault</h2>
+  <h2>🔐 VAULT</h2>
 
   <div *ngIf="!vaultUnlocked">
     <label for="masterPassword">Unesi master password:</label>
@@ -14,7 +14,26 @@
     <div *ngFor="let entry of decryptedEntries; let i = index" class="vault-entry">
       <h4>#{{ i + 1 }} — {{ entry.title }}</h4>
       <p><strong>Email:</strong> {{ entry.email }}</p>
-      <p><strong>Lozinka:</strong> {{ entry.password }}</p>
+      
+      <p class="password-field">
+        <strong>Lozinka:</strong>
+        <span 
+          class="password-container"
+          (mouseenter)="showPassword(i)"
+          (mouseleave)="hidePassword(i)"
+          (click)="togglePasswordVisibility(i)">
+          
+          <span *ngIf="!isPasswordVisible(i)" class="password-hidden">
+            ••••••••••••
+          </span>
+          
+          <span *ngIf="isPasswordVisible(i)" class="password-visible">
+            {{ entry.password }}
+          </span>
+          
+        </span>
+      </p>
+
       <p><strong>Napomena:</strong> {{ entry.note || '-' }}</p>
     </div>
   </div>
