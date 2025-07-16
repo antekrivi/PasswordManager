@@ -1,15 +1,32 @@
-/* Centriranje forme po sredini ekrana */
-form {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 2rem;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Inter', Arial, sans-serif;
 }
 
-/* Stil za inpute i labele */
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding-top: 60px;
+  box-sizing: border-box;
+}
+
+form {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  background-color: var(--bg-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
 form div {
   margin-bottom: 1.2rem;
 }
@@ -20,43 +37,51 @@ label {
   font-weight: 600;
 }
 
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
 input[type="email"],
 input[type="password"],
 input[type="text"] {
   width: 100%;
   padding: 0.6rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--input-border);
   border-radius: 6px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
   font-size: 1rem;
   box-sizing: border-box;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
 input:focus {
   outline: none;
-  border-color: #4a90e2;
-  box-shadow: 0 0 3px #4a90e2;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 3px var(--primary-color);
 }
 
-/* Poruke o greškama */
 div.ng-invalid.ng-touched input {
-  border-color: #e74c3c;
+  border-color: var(--error-color);
 }
 
 div.ng-invalid.ng-touched input:focus {
-  box-shadow: 0 0 3px #e74c3c;
+  box-shadow: 0 0 3px var(--error-color);
 }
 
 div .error-message {
-  color: #e74c3c;
+  color: var(--error-color);
   font-size: 0.875rem;
 }
 
-/* Gumb */
 button[type="submit"] {
   width: 100%;
   padding: 0.8rem;
-  background-color: #4a90e2;
-  color: white;
+  background-color: var(--submit-bg);
+  color: var(--bg-color);
   font-size: 1rem;
   border: none;
   border-radius: 6px;
@@ -65,5 +90,5 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-  background-color: #357ab7;
+  background-color: var(--submit-hover);
 }

@@ -3,12 +3,14 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { RegisterData } from '../../models/RegisterData';
+import { NavigationComponent } from '../partials/navigation/navigation.component';
 
 @Component({
   selector: 'app-register',
+  standalone: false,
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  imports: [CommonModule, ReactiveFormsModule]
+  //imports: [CommonModule, ReactiveFormsModule]
 })
 export class RegisterComponent {
   
@@ -17,7 +19,7 @@ export class RegisterComponent {
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      masterPassword: ['', [Validators.required, Validators.minLength(8)]],
+      masterPassword: ['', [Validators.required, Validators.minLength(12)]],
       repeatMasterPassword: ['', [Validators.required]],
       masterHint: ['', [Validators.maxLength(100)]]
     }, { validators: this.passwordsMatch });
@@ -41,11 +43,9 @@ export class RegisterComponent {
       ).subscribe({
         next: (response) => {
           console.log('Registracija uspješna:', response);
-          // Ovdje možeš preusmjeriti korisnika na stranicu za prijavu ili početnu stranicu
         },
         error: (error) => {
           console.error('Greška prilikom registracije:', error);
-          // Ovdje možeš obraditi grešku, npr. prikazati poruku korisniku
         }
       });
     }

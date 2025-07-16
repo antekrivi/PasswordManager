@@ -1,44 +1,82 @@
 .vault-container {
   max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
+  margin: 100px auto 0;
+  padding: 2rem clamp(1rem, 5vw, 2rem);
+  background-color: var(--form-color);
   border-radius: 12px;
-  background-color: #f3f4f6;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  color: var(--text-color);
 }
 
-input[type="password"] {
+  
+.vault-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--primary-color);
+}
+
+.vault-container label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.vault-container input[type="password"] {
   width: 100%;
-  padding: 8px;
-  margin: 12px 0;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  padding: 0.6rem;
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  font-size: 1rem;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
 }
 
-button {
-  padding: 8px 16px;
+.vault-container input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 3px var(--primary-color);
+}
+
+.vault-container button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: var(--submit-bg);
+  color: #000;
+  font-size: 1rem;
   border: none;
-  background-color: #3b82f6;
-  color: white;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: background-color 0.2s ease-in-out;
+  margin-bottom: 1rem;
 }
 
-button:hover {
-  background-color: #2563eb;
+.vault-container button:hover {
+  background-color: var(--submit-hover);
 }
 
-.error {
-  color: red;
-  margin-top: 10px;
+.vault-container .error {
+  color: var(--error-color);
+  font-size: 0.9rem;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
 }
 
 .vault-entry {
-  background: white;
-  padding: 12px;
-  margin-top: 12px;
-  border-left: 4px solid #3b82f6;
+  background-color: rgba(100, 255, 218, 0.08);
+  padding: 1rem;
   border-radius: 8px;
+  margin-bottom: 1rem;
+  border: 1px solid var(--primary-color);
+}
+
+.vault-entry h4 {
+  margin: 0 0 0.5rem;
+  color: var(--primary-color);
+}
+
+.vault-entry p {
+  margin: 0.25rem 0;
 }

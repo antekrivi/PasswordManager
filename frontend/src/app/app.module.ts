@@ -10,6 +10,7 @@ import { HomeComponent } from './components/home/home.component';
 import { HTTP_INTERCEPTORS, HttpClientModule,} from '@angular/common/http';
 import { VaultComponent } from './components/vault/vault.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { NavigationComponent } from './components/partials/navigation/navigation.component';
 
 @NgModule({
   declarations: [
@@ -17,13 +18,14 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     LoginComponent,
     HomeComponent,
     VaultComponent,
+    NavigationComponent,
+    RegisterComponent,
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
+    BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    RegisterComponent,
     HttpClientModule
     
   ],
