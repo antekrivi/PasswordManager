@@ -37,4 +37,17 @@
       <p><strong>Napomena:</strong> {{ entry.note || '-' }}</p>
     </div>
   </div>
+
+  <form *ngIf="vaultUnlocked" class="add-entry-form" (ngSubmit)="addEntry(title.value, email.value, password.value, note.value)">
+    <h3>➕ Dodaj novi zapis</h3>
+
+    <input #title type="text" placeholder="Naslov" required />
+    <input #email type="email" placeholder="Email" required />
+    <input #password type="password" placeholder="Lozinka" required />
+    <textarea #note placeholder="Napomena (opcionalno)" rows="3"></textarea>
+
+    <button type="submit">Dodaj zapis</button>
+  </form>
+
+
 </div>

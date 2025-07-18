@@ -56,15 +56,38 @@ export class VaultComponent implements OnInit{
           this.vaultUnlocked = false;
         }
       });
-
-      this.vaultUnlocked = true;
-      this.errorMessage = '';
     } catch (error) {
       console.error("Greška prilikom otključavanja vaulta:", error);
       this.errorMessage = 'Neuspješno otključavanje vaulta. Provjerite lozinku.';
       this.vaultUnlocked = false;
     }
   }
+
+  addEntry(title: string, email: string, password: string, note: string) {
+    const vaultEntry: VaultEntry = {
+      title: title,
+      email: email,
+      password: password,
+      note: note,
+    };
+    const payload = {
+      email,
+      masterPassword: this.masterPassword,
+      entry: vaultEntry
+    };
+    console.log("Adding entry:", payload);
+    this.vaultService.addVaultEntry(payload).subscribe({
+      next: (response) => {
+        console.log("Entry added successfully:", response);
+        this.decryptedEntries.push(response);
+      },
+      error: (error) => {
+        console.error("Error adding entry:", error);
+        this.errorMessage = 'Neuspješno dodavanje entrija. Provjerite lozinku.';
+      }
+    });
+  }
+
 
   togglePasswordVisibility(index: number): void { this.visiblePasswords[index] = !this.visiblePasswords[index];}
 

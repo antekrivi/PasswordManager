@@ -16,5 +16,8 @@ export class VaultService {
     return this.http.post<VaultEntry[]>(`${this.API}`, body);
   }
   
+  addVaultEntry(body: any): Observable<any> {
+    return this.http.post(`${this.API}/new`, body);
+  }
 
 }

@@ -1,6 +1,9 @@
+import argon2 from 'argon2';
+import crypto from "crypto";
+import { EncryptedVaultEntry } from "../models/EncryptedVaultEntry";
 import UserModel from "../models/User";
 import { VaultEntry } from "../models/VaultEntry";
-import { calculateVaultHmac, decryptVaultEntry, deriveHmacKey } from "../utils/crypto.util";
+import { calculateVaultHmac, decryptVaultEntry, deriveHmacKey, encryptVaultEntry } from "../utils/crypto.util";
 
 
 export class VaultService {
@@ -14,12 +17,9 @@ export class VaultService {
             throw new Error("User not found while unlocking vault");
         }
         
-        console.log("Vault before HMAC (stringified):", JSON.stringify(user.vault, null, 2));
         const hmacKey = await deriveHmacKey(masterPassword, user.encryptionSalt);
         const vaultHmac = calculateVaultHmac(user.vault, hmacKey);
 
-        console.log("Vault HMAC:", vaultHmac);
-        console.log("User Vault HMAC:", user.vaultHmac);
         if (vaultHmac !== user.vaultHmac) {
             throw new Error("Invalid master password or vault integrity compromised");
         }
@@ -36,6 +36,39 @@ export class VaultService {
         return decryptedEntries;
     }
 
-    
+    async addVaultEntry(email: string, masterPassword: string, entry: VaultEntry) {
+        // Provjera korisnika
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            throw new Error("User not found while adding vault entry");
+        }
+        const isValid = await argon2.verify(user.passwordHash, email + masterPassword);
+        if (!isValid) {
+            throw new Error('Pogrešan master password.');
+        }
+        //Dohvacanje starih entrija
+        const decryptedEntries: VaultEntry[] = await this.unlockVault(email, masterPassword);
+        decryptedEntries.push(entry);
+
+        const vault: EncryptedVaultEntry[] = [];
+        for (const decryptedEntry of decryptedEntries) {
+            const encryptedEntry = await encryptVaultEntry(masterPassword, decryptedEntry);
+            vault.push(encryptedEntry);
+        }
+        //dodavanje novog entrija
+        
+        const hmacKEy = await deriveHmacKey(masterPassword, user.encryptionSalt);
+        const expectedVaultHmac = calculateVaultHmac(user.vault, hmacKEy);
+        if (expectedVaultHmac !== user.vaultHmac) {
+            throw new Error("Vault integrity compromised");
+        }
+
+        const newVaultHmac = calculateVaultHmac(vault, hmacKEy);
+
+        user.set('vault', vault);
+        user.vaultHmac = newVaultHmac;
+        await user.save();
+
+    }
 
 }

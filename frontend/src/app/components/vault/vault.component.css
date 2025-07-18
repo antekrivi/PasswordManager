@@ -158,3 +158,54 @@ html, body {
   border: 1px solid var(--primary-color);
   position: relative; /* Za tooltip positioning */
 }
+
+.add-entry-form {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: var(--form-color);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.add-entry-form h3 {
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  text-align: center;
+}
+
+.add-entry-form input,
+.add-entry-form textarea {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background-color: var(--input-bg, #2a2a2a);
+  color: var(--text-color);
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.add-entry-form input:focus,
+.add-entry-form textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 3px var(--primary-color);
+}
+
+.add-entry-form button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: var(--submit-bg, #64ffda);
+  color: #000;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.add-entry-form button:hover {
+  background-color: var(--submit-hover, #1de9b6);
+}

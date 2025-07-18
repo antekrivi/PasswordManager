@@ -19,6 +19,7 @@ router.post('/logout', authController.logoutUser);
 
 //GET /auth/vault
 router.post('/vault', vaultController.unlockVault);
+router.post('/vault/new', vaultController.addVaultEntry);
 
 router.get('/me', authenticateJWT, authController.getCurrentUser);
 
