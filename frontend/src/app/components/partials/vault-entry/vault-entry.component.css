@@ -1,0 +1,110 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Tamna poluprozirna pozadina */
+  z-index: 1000;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--form-color);
+  color: var(--text-color);
+  border: 1px solid var(--primary-color);
+  padding: 24px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  z-index: 1001;
+  box-shadow: 0 0 12px var(--primary-color);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+  text-align: center;
+  font-size: 1.4rem;
+}
+
+.modal label {
+  display: block;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+.modal input,
+.modal textarea {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 4px;
+  border: 1px solid var(--input-border);
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.modal input:focus,
+.modal textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px var(--primary-color), 0 0 12px rgba(100, 255, 218, 0.5);
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.buttons button {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Spremi */
+.buttons button[type="submit"] {
+  background-color: var(--submit-bg);
+  color: var(--bg-color);
+}
+
+.buttons button[type="submit"]:hover {
+  background-color: var(--submit-hover);
+}
+
+/* Odustani */
+.buttons button[type="button"] {
+  background-color: var(--input-border);
+  color: var(--text-color);
+}
+
+.buttons button[type="button"]:hover {
+  background-color: var(--input-border);
+  filter: brightness(1.2);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -55%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}

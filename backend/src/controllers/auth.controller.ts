@@ -36,7 +36,10 @@ export class AuthController {
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 
-    res.status(200).json(user); // ili token
+    res.status(200).json({
+      message: "User logged in successfully",
+      user: {email: user.email}
+    });
   });
 
   refreshToken = asyncHandler(async (req: Request, res: Response) => {

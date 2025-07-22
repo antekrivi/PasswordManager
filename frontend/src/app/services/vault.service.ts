@@ -20,4 +20,13 @@ export class VaultService {
     return this.http.post(`${this.API}/new`, body);
   }
 
+  editVaultEntry(masterPassword: string, oldEntry: VaultEntry, newEntry: VaultEntry): Observable<any> {
+    const body = {masterPassword, oldEntry, newEntry };
+    return this.http.put(`${this.API}/edit`, body);
+  }
+
+  deleteVaultEntry(entry: VaultEntry, masterPassword: string): Observable<any> {
+    const body = { entry, masterPassword };
+    return this.http.delete(`${this.API}/delete`, { body });
+  }
 }

@@ -38,6 +38,7 @@ export class VaultService {
 
     async addVaultEntry(email: string, masterPassword: string, entry: VaultEntry) {
         // Provjera korisnika
+        console.log("Adding vault entry for user:", email);
         const user = await UserModel.findOne({ email });
         if (!user) {
             throw new Error("User not found while adding vault entry");
@@ -71,4 +72,72 @@ export class VaultService {
 
     }
 
+    editVaultEntry = async (email: string, masterPassword: string, oldEntry: VaultEntry, newEntry: VaultEntry) => {
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            throw new Error("User not found while editing vault entry");
+        }
+        const isValid = await argon2.verify(user.passwordHash, email + masterPassword);
+        if (!isValid) {
+            throw new Error('Pogrešan master password.');
+        }
+
+        const decryptedEntries: VaultEntry[] = await this.unlockVault(email, masterPassword);
+        if (!decryptedEntries) {
+            throw new Error("No entries found in vault");
+        }
+        const entryIndex = decryptedEntries.findIndex(entry => entry.title === oldEntry.title);
+
+        if (entryIndex === -1) {
+            throw new Error("Entry not found in vault");
+        }
+        decryptedEntries[entryIndex] = newEntry;
+        const vault: EncryptedVaultEntry[] = [];
+        for (const decryptedEntry of decryptedEntries) {
+            const encryptedEntry = await encryptVaultEntry(masterPassword, decryptedEntry);
+            vault.push(encryptedEntry);
+        }
+
+        const hmacKey = await deriveHmacKey(masterPassword, user.encryptionSalt);
+        const expectedVaultHmac = calculateVaultHmac(user.vault, hmacKey);
+        if (expectedVaultHmac !== user.vaultHmac) {
+            throw new Error("Vault integrity compromised");
+        }
+        const newVaultHmac = calculateVaultHmac(vault, hmacKey);
+        user.set('vault', vault);
+        user.vaultHmac = newVaultHmac;
+        await user.save();
+    }
+
+    deleteVaultEntry = async (email: string, masterPassword: string, entry: VaultEntry) => {
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            throw new Error("User not found while deleting vault entry");
+        }
+        const isValid = await argon2.verify(user.passwordHash, email + masterPassword);
+        if (!isValid) {
+            throw new Error('Pogrešan master password.');
+        }
+        const decryptedEntries: VaultEntry[] = await this.unlockVault(email, masterPassword);
+        if (!decryptedEntries) {
+            throw new Error("No entries found in vault");
+        }
+        const entryIndex = decryptedEntries.findIndex(e => e.title === entry.title);
+        decryptedEntries.splice(entryIndex, 1);
+        const vault: EncryptedVaultEntry[] = [];
+        for (const decryptedEntry of decryptedEntries) {
+            const encryptedEntry = await encryptVaultEntry(masterPassword, decryptedEntry);
+            vault.push(encryptedEntry);
+        }
+        const hmacKey = await deriveHmacKey(masterPassword, user.encryptionSalt);
+        const expectedVaultHmac = calculateVaultHmac(user.vault, hmacKey);
+        if (expectedVaultHmac !== user.vaultHmac) {
+            throw new Error("Vault integrity compromised");
+        }
+        const newVaultHmac = calculateVaultHmac(vault, hmacKey);
+        user.set('vault', vault);
+        user.vaultHmac = newVaultHmac;
+        await user.save();
+
+    };
 }

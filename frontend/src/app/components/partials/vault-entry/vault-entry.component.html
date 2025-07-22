@@ -1,0 +1,23 @@
+<div class="modal-backdrop" (click)="onCancel()"></div>
+<div class="modal">
+  <h2>Uredi zapis</h2>
+
+  <form (ngSubmit)="submitEdit()">
+    <label>Naslov</label>
+    <input type="text" [(ngModel)]="entry.title" name="title" required />
+
+    <label>Email</label>
+    <input type="email" [(ngModel)]="entry.email" name="email" required />
+
+    <label>Lozinka</label>
+    <input type="text" [(ngModel)]="entry.password" name="password" required />
+
+    <label>Napomena</label>
+    <textarea [(ngModel)]="entry.note" name="note" rows="3"></textarea>
+
+    <div class="buttons">
+      <button type="submit">Spremi</button>
+      <button type="button" (click)="onCancel()">Odustani</button>
+    </div>
+  </form>
+</div>

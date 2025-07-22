@@ -20,6 +20,8 @@ router.post('/logout', authController.logoutUser);
 //GET /auth/vault
 router.post('/vault', vaultController.unlockVault);
 router.post('/vault/new', vaultController.addVaultEntry);
+router.put('/vault/edit', authenticateJWT, vaultController.editVaultEntry);
+router.delete('/vault/delete', authenticateJWT, vaultController.deleteVaultEntry);
 
 router.get('/me', authenticateJWT, authController.getCurrentUser);
 

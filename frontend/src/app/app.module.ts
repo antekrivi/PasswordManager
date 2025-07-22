@@ -11,6 +11,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule,} from '@angular/common/http';
 import { VaultComponent } from './components/vault/vault.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { NavigationComponent } from './components/partials/navigation/navigation.component';
+import { VaultEntryComponent } from './components/partials/vault-entry/vault-entry.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { NavigationComponent } from './components/partials/navigation/navigation
     VaultComponent,
     NavigationComponent,
     RegisterComponent,
+    VaultEntryComponent,
   ],
   imports: [
     AppRoutingModule,

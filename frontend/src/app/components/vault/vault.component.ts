@@ -15,12 +15,18 @@ import { AuthService } from '../../services/auth.service';
 })
 export class VaultComponent implements OnInit{
   
+  email: string = '';
   masterPassword: string = '';
   user: any;
   decryptedEntries: VaultEntry[] = [];
   vaultUnlocked: boolean = false;
   errorMessage: string = '';
   visiblePasswords: { [key: number]: boolean } = {};
+
+  editIndex: number | null = null;
+  editingEntry: VaultEntry | null = null;
+  entryToDeleteIndex: number | null = null;
+
 
   constructor(private vaultService: VaultService,
     private router: Router,
@@ -54,6 +60,10 @@ export class VaultComponent implements OnInit{
           console.error("Greška prilikom otključavanja vaulta:", error);
           this.errorMessage = 'Neuspješno otključavanje vaulta. Provjerite lozinku.';
           this.vaultUnlocked = false;
+          if(error.status === 401) {
+            alert(this.errorMessage);
+            this.router.navigate(['/login']);
+          }
         }
       });
     } catch (error) {
@@ -82,8 +92,71 @@ export class VaultComponent implements OnInit{
         this.decryptedEntries.push(response);
       },
       error: (error) => {
+        if(error.status === 401) {
+          this.errorMessage = 'Greška pri dodavanju. Molim logirati se ponovo';
+          alert(this.errorMessage);
+          this.router.navigate(['/login']);
+        }
         console.error("Error adding entry:", error);
         this.errorMessage = 'Neuspješno dodavanje entrija. Provjerite lozinku.';
+      }
+    });
+  }
+  
+  openEditModal(entry: VaultEntry, index: number) {
+    this.editingEntry = { ...entry };
+    this.editIndex = index;
+  }
+
+  closeEditModal() {
+    this.editingEntry = null;
+    this.editIndex = null;
+  }
+
+  saveEditedEntry(edited: VaultEntry) {
+    if (this.editIndex !== null) {
+      const oldEntry : VaultEntry = this.decryptedEntries[this.editIndex];
+      this.vaultService.editVaultEntry(this.masterPassword, oldEntry, edited).subscribe({
+        next: () => {
+          this.decryptedEntries[this.editIndex!] = edited;
+          this.closeEditModal();
+        },
+        error: (err) => {
+          console.error('Greška pri uređivanju:', err);
+          if(err.status === 401) {
+            this.errorMessage = 'Greška pri uređivanju. Molim logirati se ponovo';
+            alert(this.errorMessage);
+            this.router.navigate(['/login']);
+            }
+          }
+      });
+    }
+  }
+
+  confirmDeleteEntry(index: number): void {
+    this.entryToDeleteIndex = index;
+  }
+
+  cancelDelete(): void {
+    this.entryToDeleteIndex = null;
+  }
+
+  deleteEntry(index: number): void {
+    const entry = this.decryptedEntries[index];
+
+    this.vaultService.deleteVaultEntry(entry, this.masterPassword).subscribe({
+      next: () => {
+        this.decryptedEntries.splice(index, 1);
+        this.entryToDeleteIndex = null;
+      },
+      error: (err) => {
+        console.error('Greška pri brisanju:', err);
+        this.entryToDeleteIndex = null;
+        if(err.status === 401) {
+          this.errorMessage = 'Greška pri brisanju. Molim logirati se ponovo';
+          alert(this.errorMessage);
+          this.router.navigate(['/login']);
+        }
       }
     });
   }

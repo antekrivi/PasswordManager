@@ -10,32 +10,49 @@
   </div>
 
   <div *ngIf="vaultUnlocked">
-    <h3>🔓 Vault zapisi:</h3>
     <div *ngFor="let entry of decryptedEntries; let i = index" class="vault-entry">
-      <h4>#{{ i + 1 }} — {{ entry.title }}</h4>
-      <p><strong>Email:</strong> {{ entry.email }}</p>
-      
-      <p class="password-field">
-        <strong>Lozinka:</strong>
-        <span 
-          class="password-container"
-          (mouseenter)="showPassword(i)"
-          (mouseleave)="hidePassword(i)"
-          (click)="togglePasswordVisibility(i)">
-          
-          <span *ngIf="!isPasswordVisible(i)" class="password-hidden">
-            ••••••••••••
-          </span>
-          
-          <span *ngIf="isPasswordVisible(i)" class="password-visible">
-            {{ entry.password }}
-          </span>
-          
-        </span>
-      </p>
+      <div class="entry-header">
+        <h4>#{{ i + 1 }} — {{ entry.title }}</h4>
+        <div class="entry-actions">
+          <button (click)="openEditModal(entry, i)" class="action-btn edit-btn">
+            ✏️
+          </button>
+          <button class="action-btn delete-btn" (click)="confirmDeleteEntry(i)">
+            🗑️
+          </button>
+        </div>
 
-      <p><strong>Napomena:</strong> {{ entry.note || '-' }}</p>
-    </div>
+        
+      </div>
+      <div *ngIf="entryToDeleteIndex === i" class="delete-confirmation">
+        <p>⚠️ Are you sure you want to delete this entry?</p>
+        <div class="delete-confirmation-buttons">
+          <button (click)="deleteEntry(i)">Yes</button>
+          <button (click)="cancelDelete()">No</button>
+        </div>
+      </div>
+
+    <p><strong>Email:</strong> {{ entry.email }}</p>
+    
+    <p class="password-field">
+      <strong>Lozinka:</strong>
+      <span 
+        class="password-container"
+        (mouseenter)="showPassword(i)"
+        (mouseleave)="hidePassword(i)"
+        (click)="togglePasswordVisibility(i)">
+        
+        <span *ngIf="!isPasswordVisible(i)" class="password-hidden">
+          ••••••••••••
+        </span>
+        
+        <span *ngIf="isPasswordVisible(i)" class="password-visible">
+          {{ entry.password }}
+        </span>
+      </span>
+    </p>
+  
+    <p><strong>Napomena:</strong> {{ entry.note || '-' }}</p>
   </div>
 
   <form *ngIf="vaultUnlocked" class="add-entry-form" (ngSubmit)="addEntry(title.value, email.value, password.value, note.value)">
@@ -51,3 +68,12 @@
 
 
 </div>
+
+<app-vault-entry
+  *ngIf="editingEntry"
+  [entry]="editingEntry"
+  [index]="editIndex!"
+  (save)="saveEditedEntry($event)"
+  (cancel)="closeEditModal()">
+</app-vault-entry>
+
