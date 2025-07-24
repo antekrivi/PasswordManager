@@ -12,6 +12,7 @@ import { VaultComponent } from './components/vault/vault.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { NavigationComponent } from './components/partials/navigation/navigation.component';
 import { VaultEntryComponent } from './components/partials/vault-entry/vault-entry.component';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 @NgModule({
   declarations: [
@@ -28,8 +29,8 @@ import { VaultEntryComponent } from './components/partials/vault-entry/vault-ent
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
-    
+    HttpClientModule,
+    RecaptchaModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},

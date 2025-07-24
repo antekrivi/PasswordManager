@@ -81,7 +81,7 @@ export class VaultComponent implements OnInit{
       note: note,
     };
     const payload = {
-      email,
+      email: this.user.email,
       masterPassword: this.masterPassword,
       entry: vaultEntry
     };

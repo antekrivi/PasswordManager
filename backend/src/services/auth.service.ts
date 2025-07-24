@@ -42,12 +42,10 @@ export class AuthService {
         if (!user) {
             throw new Error('Invalid credentials');
         }
-
         const isPasswordCorrect = await argon2.verify(user.passwordHash, email + masterPassword);
         if (!isPasswordCorrect) {
             throw new Error('Invalid credentials');
         }
-
         return {         
             id: user._id,
             email: user.email,
@@ -57,7 +55,7 @@ export class AuthService {
             vaultHmac: user.vaultHmac,
         };
     }
-
+    
     async generateTokens(userId: string, email: string) {
         const accessToken = jwt.sign(
             { id: userId, email },

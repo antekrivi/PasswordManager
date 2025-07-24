@@ -26,7 +26,7 @@ app.use('/auth', authRoutes);
 
 const httpsOptions = {
     key: fs.readFileSync(path.join(__dirname, '../localhost+2-key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, '../localhost+2.pem')),
+    cert: fs.readFileSync(path.join(__dirname, '../localhost+2.pem'))
 };
 
 const port = 5000;

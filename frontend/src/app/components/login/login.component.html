@@ -16,8 +16,17 @@
       <div *ngIf="loginForm.get('masterPassword')?.invalid && loginForm.get('masterPassword')?.touched">
         Lozinka mora imati barem 8 znakova.
       </div>
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
     </div>
 
+    <div *ngIf="showCaptcha">
+      <re-captcha
+        (resolved)="onCaptchaResolved($event)"
+        siteKey="6LcYDY0rAAAAAP1JdcbuT_vE6r6L1VWHVLzfk2kn">
+      </re-captcha>
+    </div>
     <button type="submit">Login</button>
   </form>
 </div>

@@ -4,6 +4,7 @@ import { AuthService } from '../services/auth.service';
 import { VaultService } from '../services/vault.service';
 import { VaultController } from '../controllers/vault.controller';
 import { authenticateJWT } from '../middlewares/auth.middleware';
+import { loginRateLimiter } from '../middlewares/loginRateLimiter';
 
 const router = express.Router();
 const authService = new AuthService();
@@ -14,11 +15,11 @@ const vaultController = new VaultController(vaultService);
 
 // POST /auth/...
 router.post('/register', authController.registerUser);
-router.post('/login', authController.loginUser);
+router.post('/login', loginRateLimiter, authController.loginUser);
 router.post('/logout', authController.logoutUser);
 
 //GET /auth/vault
-router.post('/vault', vaultController.unlockVault);
+router.post('/vault', loginRateLimiter, vaultController.unlockVault);
 router.post('/vault/new', vaultController.addVaultEntry);
 router.put('/vault/edit', authenticateJWT, vaultController.editVaultEntry);
 router.delete('/vault/delete', authenticateJWT, vaultController.deleteVaultEntry);

@@ -11,8 +11,12 @@ import { UserService } from '../../services/user.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-
+  
   loginForm: FormGroup;
+  errorMessage: string = '';
+  captchaToken : string | null = null;
+  showCaptcha = false;
+  failedAttempts = 0;
 
   constructor(private fb: FormBuilder, private authService: AuthService,
     private router: Router) {
@@ -20,7 +24,6 @@ export class LoginComponent {
       email: ['', [Validators.required, Validators.email]],
       masterPassword: ['', [Validators.required]]
     });
-
   }
 
   onSubmit() {
@@ -29,20 +32,18 @@ export class LoginComponent {
         email: this.loginForm.get('email')?.value,
         masterPassword: this.loginForm.get('masterPassword')?.value,
     }
-
+    this.errorMessage = '';
     this.authService.login(loginData).pipe(
     ).subscribe({
       next: (response: any) => {
         console.log('Login uspješan:', response);
-        //localStorage.setItem('token', response.token);
-        //localStorage.setItem('user', JSON.stringify(response.user));
-        //this.userService.setUser(response.user);
-        console.log('Korisnik spremljen:', response.user);
         this.router.navigateByUrl('/vault');
       },
       error: (error) => {
-        console.error('Greška prilikom logina:', error);
-
+        console.error('Greška prilikom logina:', error.message);
+        if(error.status === 429) {
+          this.errorMessage = 'Previše pokušaja prijave. Pokušajte ponovno za 3 minute.';
+        }
       }
     });
     }
@@ -50,4 +51,9 @@ export class LoginComponent {
       console.log('Forma nije ispravna');
     }
   }
+
+  onCaptchaResolved(token: string | null): void {
+    this.captchaToken = token;
+  }
+
 }
