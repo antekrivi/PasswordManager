@@ -14,9 +14,6 @@ export class LoginComponent {
   
   loginForm: FormGroup;
   errorMessage: string = '';
-  captchaToken : string | null = null;
-  showCaptcha = false;
-  failedAttempts = 0;
 
   constructor(private fb: FormBuilder, private authService: AuthService,
     private router: Router) {
@@ -39,10 +36,20 @@ export class LoginComponent {
         console.log('Login uspješan:', response);
         this.router.navigateByUrl('/vault');
       },
-      error: (error) => {
-        console.error('Greška prilikom logina:', error.message);
-        if(error.status === 429) {
-          this.errorMessage = 'Previše pokušaja prijave. Pokušajte ponovno za 3 minute.';
+      error: (err) => {
+        console.error('Greška prilikom logina:', err.message);
+        switch (err.status) {
+          case 429:
+            this.errorMessage = 'Previše prijava. Pokušajte ponovno kasnije';
+            break;
+          case 423:
+              this.errorMessage = 'Račun je zaključan. Pokušajte ponovno kasnije';
+              break;
+          case 401:
+            this.errorMessage = 'Neispravni podatci. Pokušajte ponovno.';
+            break;
+          default:
+            this.errorMessage = 'Došlo je do greške. Pokušajte ponovno.';       
         }
       }
     });
@@ -50,10 +57,6 @@ export class LoginComponent {
     else {
       console.log('Forma nije ispravna');
     }
-  }
-
-  onCaptchaResolved(token: string | null): void {
-    this.captchaToken = token;
   }
 
 }

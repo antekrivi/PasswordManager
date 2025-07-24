@@ -17,27 +17,41 @@ export class AuthController {
 
   loginUser = asyncHandler(async (req: Request, res: Response) => {
     console.log("Login request received:");
-    const { email, masterPassword, captchaToken } = req.body;
+    const { email, masterPassword } = req.body;
     
-    const user = await this.authService.loginUser(email, masterPassword);
-    const {accessToken, refreshToken} = await this.authService.generateTokens(user.id.toString(), user.email);
-    
-    res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-      maxAge: 15 * 60 * 1000 // 15 minutes
-    });
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-    });
-    res.status(200).json({
-      message: "User logged in successfully",
-      user: {email: user.email}
-    });
+    try{
+      const user = await this.authService.loginUser(email, masterPassword);
+      const {accessToken, refreshToken} = await this.authService.generateTokens(user.id.toString(), user.email);
+      
+      res.cookie('accessToken', accessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        maxAge: 15 * 60 * 1000 // 15 minutes
+      });
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+      });
+      res.status(200).json({
+        message: "User logged in successfully",
+        user: {email: user.email}
+      });
+    }
+    catch (error: any) {
+      const errorMessage = error.message || "Neuspješna prijava";
+      let statusCode = 401;
+
+      if (errorMessage.includes("zaključan")) {
+        statusCode = 423;
+      } else if (errorMessage.includes("Neispravni korisnik")) {
+        statusCode = 404;
+      }
+      res.status(statusCode).json({ message: errorMessage });
+    }
+  
   });
 
   refreshToken = asyncHandler(async (req: Request, res: Response) => {
