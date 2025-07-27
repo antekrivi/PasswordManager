@@ -20,7 +20,7 @@ export const sendHintEmail = async (to: string, hint: string) => {
     }
   });
   await transporter.sendMail({
-    from: '"Password Manager" <yourapp@example.com>',
+    from: '"PasswordManager" <yourapp@example.com>',
     to,
     subject: 'Password Hint',
     text: `Here is your password hint: ${hint}`
