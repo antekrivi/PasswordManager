@@ -3,8 +3,8 @@ import asyncHandler from "express-async-handler";
 import { AuthService } from "../services/auth.service";
 import jwt from "jsonwebtoken";
 import UserModel from "../models/User";
+import { sendHintEmail } from "../utils/mailer";
 
-// auth.controller.ts
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -13,7 +13,6 @@ export class AuthController {
     await this.authService.registerUser(email, masterPassword, note);
     res.status(201).json({ message: "User registered successfully" });
   });
-  
 
   loginUser = asyncHandler(async (req: Request, res: Response) => {
     console.log("Login request received:");
@@ -91,4 +90,21 @@ export class AuthController {
     const user = req.user;
     res.json({ user });
   });
+
+  forgotPassword = asyncHandler(async (req: Request, res: Response) => {
+    const { email } = req.body;
+    try {
+      const user = await UserModel.findOne({ email });
+      if (!user || !user.passwordHint) {
+        res.status(200).json({ message: 'Account doesnt exist' });
+        return;
+      }
+      await sendHintEmail(user.email, user.passwordHint);
+
+      res.status(200).json({ message: 'If an account exists, an email has been sent.' });
+    } catch (error) {
+      console.error('Forgot password error:', error);
+      res.status(500).json({ message: 'Server error' });
+    }});
+
 }

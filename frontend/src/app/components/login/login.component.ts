@@ -59,4 +59,16 @@ export class LoginComponent {
     }
   }
 
+  forgotPassword() {
+    this.authService.forgotPassword(this.loginForm.get('email')?.value).subscribe({
+      next: () => {
+        console.log('Email za resetiranje lozinke poslan');
+        this.router.navigateByUrl('/login');
+      },
+      error: (err: any) => {
+        console.error('Greška prilikom slanja emaila:', err.message);
+        this.errorMessage = 'Došlo je do greške prilikom slanja emaila. Pokušajte ponovno.';
+      }
+    })
+  }
 }

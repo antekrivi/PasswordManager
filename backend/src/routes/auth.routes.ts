@@ -18,12 +18,14 @@ router.post('/register', authController.registerUser);
 router.post('/login', loginRateLimiter, authController.loginUser);
 router.post('/logout', authController.logoutUser);
 
-//GET /auth/vault
-router.post('/vault', loginRateLimiter, vaultController.unlockVault);
-router.post('/vault/new', vaultController.addVaultEntry);
+// /auth/vault
+router.post('/vault', authenticateJWT, loginRateLimiter, vaultController.unlockVault);
+router.post('/vault/new', authenticateJWT, vaultController.addVaultEntry);
 router.put('/vault/edit', authenticateJWT, vaultController.editVaultEntry);
 router.delete('/vault/delete', authenticateJWT, vaultController.deleteVaultEntry);
 
 router.get('/me', authenticateJWT, authController.getCurrentUser);
+
+router.post('/forgot-password', authController.forgotPassword);
 
 export default router;

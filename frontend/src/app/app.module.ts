@@ -13,6 +13,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { NavigationComponent } from './components/partials/navigation/navigation.component';
 import { VaultEntryComponent } from './components/partials/vault-entry/vault-entry.component';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { PasswordHintComponent } from './components/password-hint/password-hint.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
     NavigationComponent,
     RegisterComponent,
     VaultEntryComponent,
+    PasswordHintComponent,
   ],
   imports: [
     AppRoutingModule,

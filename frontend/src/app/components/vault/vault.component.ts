@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { VaultEntry } from '../../models/VaultEntry';
 
@@ -6,6 +6,7 @@ import argon2 from 'argon2';
 import { VaultService } from '../../services/vault.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-vault',
@@ -15,6 +16,9 @@ import { AuthService } from '../../services/auth.service';
 })
 export class VaultComponent implements OnInit{
   
+  entryForm!: FormGroup;
+  @ViewChild('titleInput') titleInput!: ElementRef;
+
   email: string = '';
   masterPassword: string = '';
   user: any;
@@ -30,10 +34,17 @@ export class VaultComponent implements OnInit{
 
   constructor(private vaultService: VaultService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private fb: FormBuilder
   ) {}
 
   async ngOnInit() {
+    this.entryForm = this.fb.group({
+      title: [''],
+      email: [''],
+      password: [''],
+      note: ['']
+    });
     
     this.authService.getCurrentUser().subscribe({
       next: (res) => {
@@ -73,23 +84,27 @@ export class VaultComponent implements OnInit{
     }
   }
 
-  addEntry(title: string, email: string, password: string, note: string) {
-    const vaultEntry: VaultEntry = {
-      title: title,
-      email: email,
-      password: password,
-      note: note,
-    };
+  addEntry() {
+    if(this.entryForm.invalid) {
+      this.errorMessage = 'Molimo ispunite sva polja.';
+      return;
+    }
+    const vaultEntry: VaultEntry = this.entryForm.value;
     const payload = {
       email: this.user.email,
       masterPassword: this.masterPassword,
       entry: vaultEntry
     };
+    
     console.log("Adding entry:", payload);
     this.vaultService.addVaultEntry(payload).subscribe({
       next: (response) => {
         console.log("Entry added successfully:", response);
         this.decryptedEntries.push(response);
+        this.entryForm.reset();
+        setTimeout(() => {
+          this.titleInput.nativeElement.focus();
+        })
       },
       error: (error) => {
         if(error.status === 401) {

@@ -5,12 +5,14 @@
   right: 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 0 20px;
   z-index: 999;
 }
 
 .theme-toggle,
-.logout-button {
+.logout-button,
+.home-button {
   background: transparent;
   border: 1px solid var(--primary-color);
   color: var(--text-color);
@@ -18,12 +20,19 @@
   border-radius: 4px;
   font-size: 14px;
   cursor: pointer;
+  margin-left: 10px;
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
 .theme-toggle:hover,
-.logout-button:hover {
+.logout-button:hover,
+.home-button:hover {
   background-color: var(--primary-color);
   color: var(--bg-color);
   border-color: var(--primary-color);
+}
+
+.right-buttons {
+  display: flex;
+  align-items: center;
 }

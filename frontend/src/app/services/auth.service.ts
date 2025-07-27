@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
+  
   private API = 'https://localhost:5000/auth';
 
   constructor(private http: HttpClient) { }
@@ -36,7 +37,6 @@ export class AuthService {
   logout(): void {
     this.http.post(`${this.API}/logout`, {}, { withCredentials: true }).subscribe({
       next: () => {
-        
         console.log("Odjavljen korisnik.");
       },
       error: (err) => {
@@ -48,4 +48,9 @@ export class AuthService {
     return this.http.get(`${this.API}/me`, { withCredentials: true });
   }
   
+  forgotPassword(email: string): Observable<Object> {
+    return this.http.post(`${this.API}/forgot-password`, {email}, {
+      withCredentials: true
+    });
+  }
 }
